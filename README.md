@@ -4,4 +4,8 @@
 A Discord bot that track social engagement.
 
 ## Usage
-TODO add usage section
+Navigate to the `src/` directory and run the main script:
+```bash
+cd src/
+python main.py
+```
