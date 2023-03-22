@@ -5,4 +5,5 @@ dependencies:
   - pip:
     - jupyterlab==3.6.*
     - python-dotenv==1.0.*
+    - discord.py==2.2.*
     - -e .
