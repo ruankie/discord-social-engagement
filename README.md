@@ -4,7 +4,10 @@
 A Discord bot that track social engagement.
 
 ## Usage
-Navigate to the `src/` directory and run the main script:
+1. Set your credentials
+    - Enter your bot ID in `.env.example` and rename it to `.env`
+    - Set the channels you want to monitor inside `src/bot_config.example.yml` and rename it to `src/bot_config.yml`
+2. Navigate to the `src/` directory and run the main script:
 ```bash
 cd src/
 python main.py
