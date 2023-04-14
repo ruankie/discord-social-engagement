@@ -24,5 +24,6 @@ def main():
     bot = EngagementBot(intents=intents, channel_ids=CHANNEL_IDS)
     engagement_summary = bot.run(BOT_TOKEN)
 
+
 if __name__ == "__main__":
     main()

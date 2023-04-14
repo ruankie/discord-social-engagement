@@ -18,10 +18,7 @@ class EngagementBot(discord.Client):
 
         for channel_id in self.channel_ids:
             channel = self.get_channel(channel_id)
-            messages = await channel.history(
-                limit=None,
-                after=since_time
-            ).flatten()
+            messages = await channel.history(limit=None, after=since_time).flatten()
 
             # count the number of messages and reactions
             num_messages = len(messages)
@@ -32,10 +29,12 @@ class EngagementBot(discord.Client):
             # update engagement results
             self.engagement_summary[channel.name] = {
                 "num_messages": num_messages,
-                num_reactions: num_reactions
+                num_reactions: num_reactions,
             }
 
-        print(f"\nEngagement Summary\n------------------\n\n{self.engagement_summary}\n")
+        print(
+            f"\nEngagement Summary\n------------------\n\n{self.engagement_summary}\n"
+        )
 
         await self.close()
         return self.engagement_summary

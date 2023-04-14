@@ -7,7 +7,9 @@ import logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s]: %(message)s",
-    handlers=[logging.StreamHandler()])
+    handlers=[logging.StreamHandler()],
+)
+
 
 def main():
     # load env vars
@@ -29,13 +31,18 @@ def main():
 
     @client.event
     async def on_message(msg):
-        logging.info(f"Message received. Author: {msg.author.id}, Channel: {msg.channel.id}")
+        logging.info(
+            f"Message received. Author: {msg.author.id}, Channel: {msg.channel.id}"
+        )
 
     @client.event
     async def on_raw_reaction_add(pld):
-        logging.info(f"Reaction added. By user: {pld.user_id}, Channel: {pld.channel_id}, Emoji: {pld.emoji}")
+        logging.info(
+            f"Reaction added. By user: {pld.user_id}, Channel: {pld.channel_id}, Emoji: {pld.emoji}"
+        )
 
     client.run(BOT_TOKEN)
+
 
 if __name__ == "__main__":
     main()
