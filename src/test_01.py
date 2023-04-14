@@ -29,11 +29,11 @@ def main():
 
     @client.event
     async def on_message(msg):
-        logging.info(f"Message received. Author: {msg.author.name}, Channel: {msg.channel.name}")
+        logging.info(f"Message received. Author: {msg.author.id}, Channel: {msg.channel.id}")
 
     @client.event
-    async def on_reaction_add(reaction, user):
-        logging.info(f"Reaction added. By: {user.name}, Channel: {reaction.message.channel.name}, Emoji: {reaction.emoji}")
+    async def on_raw_reaction_add(pld):
+        logging.info(f"Reaction added. By user: {pld.user_id}, Channel: {pld.channel_id}, Emoji: {pld.emoji}")
 
     client.run(BOT_TOKEN)
 
