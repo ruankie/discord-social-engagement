@@ -17,6 +17,7 @@ A Discord bot that track social engagement.
 3. Set your Discord credentials
     - Enter your bot ID in `.env.example` and rename it to `.env`
     - Set the channels you want to monitor inside `src/bot_config.example.yml` and rename it to `src/bot_config.yml`
+4. Set config in `config.yml` (you can use `config.yml.example` as a template)
 
 ### Run bot
 1. Navigate to the `src/` directory and run the main script:
