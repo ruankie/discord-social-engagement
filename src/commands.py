@@ -3,15 +3,21 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import logging
+import yaml
 
+# logging setup
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s]: %(message)s",
     handlers=[logging.StreamHandler()],
 )
 
-CHANNEL_IDS = [""]
-AUTHORISED_USER_IDS = [123]
+# load config
+with open("config.yml", "r") as f:
+    config = yaml.safe_load(f)
+CHANNEL_IDS = config["social_engagement"]["channels_tracked"]["ids"]
+AUTHORISED_USER_IDS = config["auth"]["authorised_users"]["ids"]
+
 
 def check_auth(ctx):
     """
@@ -19,20 +25,21 @@ def check_auth(ctx):
     """
     return ctx.message.author.id in AUTHORISED_USER_IDS
 
+# load env vars
+logging.info("Loading env vars")
+load_dotenv()
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+
+# define intents
+logging.info("Defining intents")
+intents = discord.Intents.default()
+intents.message_content = True
+
+logging.info("Setting up discord bot and client")
+bot = commands.Bot(command_prefix='$', intents=intents)
+client = discord.Client(intents=intents)
+
 def main():
-    # load env vars
-    logging.info("Loading env vars")
-    load_dotenv()
-    BOT_TOKEN = os.environ["BOT_TOKEN"]
-
-    # define intents
-    logging.info("Defining intents")
-    intents = discord.Intents.default()
-    intents.message_content = True
-
-    logging.info("Setting up discord bot")
-    bot = commands.Bot(command_prefix='$', intents=intents)
-
     @bot.command()
     async def test(ctx):
         logging.info(f"Command triggered. Name:test, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
@@ -61,14 +68,17 @@ def main():
         await ctx.send(file=file, content=f"Here is a file.")
 
     @bot.command()
-    async def channels(ctx):
-        logging.info(f"Command triggered. Name:channels, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
-        counter = 0
-        async for message in ctx.channel.history(limit=200):
-            counter += 1
-        await ctx.send(f"Found a total of {counter} messages.")
+    async def ch(ctx):
+        logging.info(f"Command triggered. Name:ch, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
+        channels = []
+        for channel_id in CHANNEL_IDS:
+            channels.append(client.get_channel(channel_id))
+        try:
+            channel_names = [c.name for c in channels]
+            await ctx.send(f"Channel names: {channel_names}")
+        except Exception as ex:
+            logging.error(ex)
 
-    
 
     bot.run(BOT_TOKEN)
 
