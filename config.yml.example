@@ -1,0 +1,11 @@
+auth:
+    authorised_users:
+        ids:
+            - 123456
+            - 456789
+social_engagement:
+    channels_tracked:
+        ids:
+            - 786321
+            - 985132
+        
