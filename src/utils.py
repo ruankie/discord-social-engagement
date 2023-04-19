@@ -1,8 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from typing import List, Union
-from dataclasses import dataclass
-
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -21,11 +20,20 @@ class HistoricalDiscordMessage:
     author_id: int
     reactions: int
 
+    def to_dict(self):
+        """
+        Returns a dictionary representation of the object and its attributes.
+        """
+        return asdict(self)
 
 
-def hist_list_to_pandas_df(hist_list: List[HistoricalDiscordMessage]) -> pd.DataFrame:
+def hist_msg_list_to_pandas_df(hist_list: List[HistoricalDiscordMessage]) -> pd.DataFrame:
     """
     Take a list of HistoricalDiscordMessages and convert it into a
-    pandas DataFrame for further processing
+    pandas DataFrame for further processing.
     """
-    pass
+    dict_list = [msg.to_dict for msg in hist_list]
+    df = pd.DataFrame(data=dict_list)
+    df["date_time"] = pd.to_datetime(df["date_time"])
+    df = df.set_index("date_time")
+    return df
