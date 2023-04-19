@@ -7,4 +7,6 @@ dependencies:
     - python-dotenv==1.0.*
     - discord.py==2.2.*
     - pytz==2022.7.*
+    - pandas==2.0.*
+    - black==23.3.*
     - -e .
