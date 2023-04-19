@@ -9,7 +9,8 @@ from src.utils import (
     HistoricalDiscordMessage, 
     hist_msg_list_to_pandas_df, 
     summarise_counts_by_group_and_freq, 
-    summarise_counts
+    summarise_counts,
+    get_hist_summary_discord_embed
 )
 
 # logging setup
@@ -125,14 +126,16 @@ def main():
         out_df.reset_index().to_csv(file_path, index=False)
         logging.info(f"Replying with message count history and attached file: {file_path}")
         file = discord.File(file_path)
-        
-        message_body = f"""Here is your historical message count summary:
-        📅 Since: `{after_date}`
-        ⏰ Sample Frequency: `{freq}`
-        📢 Channels: {', '.join([ch.name for ch in tracked_channels])}
-        """        
-        await ctx.send(file=file, content=message_body)
-        
+
+        embed = get_hist_summary_discord_embed(
+            since=after_date, 
+            freq=freq, 
+            channel_names=tracked_channels, 
+            embed_title="Historical Engagement"
+        )
+        embed.set_footer(text="Please find the summary attached.")
+        await ctx.send(embed=embed, file=file)
+
         os.remove(file_path)
         logging.info(f"Removed temporary file: {file_path}")
 
