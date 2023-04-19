@@ -32,7 +32,7 @@ def hist_msg_list_to_pandas_df(hist_list: List[HistoricalDiscordMessage]) -> pd.
     Take a list of HistoricalDiscordMessages and convert it into a
     pandas DataFrame for further processing.
     """
-    dict_list = [msg.to_dict for msg in hist_list]
+    dict_list = [msg.to_dict() for msg in hist_list]
     df = pd.DataFrame(data=dict_list)
     df["date_time"] = pd.to_datetime(df["date_time"])
     df = df.set_index("date_time")
