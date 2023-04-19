@@ -4,6 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import logging
 import yaml
+from datetime import datetime
 from src.utils import (
     HistoricalDiscordMessage, 
     hist_msg_list_to_pandas_df, 
@@ -23,7 +24,6 @@ with open("config.yml", "r") as f:
     config = yaml.safe_load(f)
 CHANNEL_IDS = config["discord"]["channels_tracked"]["ids"]
 AUTHORISED_USER_IDS = config["discord"]["authorised_users"]["ids"]
-FREQ = config["general"]["resample_freq"]
 
 
 def check_auth(ctx):
@@ -82,7 +82,7 @@ def main():
 
     @bot.command()
     @commands.check(check_auth)
-    async def hst(ctx):
+    async def hst(ctx, after_date: str = "2022-01-01", freq: str = "D"):
         logging.info(f"Command triggered. Name:hst, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
 
         # get list of tracked channels
@@ -93,11 +93,12 @@ def main():
         logging.info(f"Found {len(tracked_channels)} channels")
 
         # get channel message history for tracked channels
+        after_date_dt = datetime.strptime(after_date, "%Y-%m-%d")
         hist_list = []
         for ch in tracked_channels:
-            logging.info(f"Getting message history for channel: {ch.id}")
+            logging.info(f"Getting message history for channel {ch.id} since {after_date}")
             msg_counter = 0
-            async for message in ch.history(limit=2000):
+            async for message in ch.history(after=after_date_dt):
                 msg_counter += 1
                 historical_msg = HistoricalDiscordMessage(
                     date_time=message.created_at,
@@ -109,12 +110,12 @@ def main():
             logging.info(f"Found a total of {msg_counter} messages for channel: {ch.id}")
 
         # transform message history to get summary
-        logging.info("Transforming and summarising message history")
+        logging.info(f"Resampling and summarising message history. Freq: {freq}")
         df = hist_msg_list_to_pandas_df(hist_list)
         summary_df = summarise_counts_by_group_and_freq(
             df=df, 
             groups=["channel_id", "author_id"], 
-            freq=FREQ
+            freq=freq
         )
         out_df = summarise_counts(summary_df=summary_df)
 
@@ -124,7 +125,14 @@ def main():
         out_df.reset_index().to_csv(file_path, index=False)
         logging.info(f"Replying with message count history and attached file: {file_path}")
         file = discord.File(file_path)
-        await ctx.send(file=file, content=f"Here is your message count history:")
+        
+        message_body = f"""Here is your historical message count summary:
+        📅 Since: `{after_date}`
+        ⏰ Sample Frequency: `{freq}`
+        📢 Channels: {', '.join([ch.name for ch in tracked_channels])}
+        """        
+        await ctx.send(file=file, content=message_body)
+        
         os.remove(file_path)
         logging.info(f"Removed temporary file: {file_path}")
 
