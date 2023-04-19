@@ -1,11 +1,10 @@
-auth:
-    authorised_users:
+discord:
+    authorised_users: # authorised to run bot commands
         ids:
-            - 123456
-            - 456789
-social_engagement:
-    channels_tracked:
+            - 123354
+    channels_tracked: # channels to include for engagement tracking
         ids:
-            - 786321
-            - 985132
-        
+            - 653231
+            - 984651
+general:
+    resample_freq: D # results will be summarised by this time sample frequency
