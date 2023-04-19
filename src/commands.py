@@ -35,9 +35,8 @@ logging.info("Defining intents")
 intents = discord.Intents.default()
 intents.message_content = True
 
-logging.info("Setting up discord bot and client")
+logging.info("Setting up discord bot")
 bot = commands.Bot(command_prefix='$', intents=intents)
-client = discord.Client(intents=intents)
 
 def main():
     @bot.command()
@@ -72,7 +71,7 @@ def main():
         logging.info(f"Command triggered. Name:ch, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
         channels = []
         for channel_id in CHANNEL_IDS:
-            channels.append(client.get_channel(channel_id))
+            channels.append(bot.get_channel(channel_id))
         try:
             channel_names = [c.name for c in channels]
             await ctx.send(f"Channel names: {channel_names}")
