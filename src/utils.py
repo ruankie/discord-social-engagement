@@ -1,4 +1,5 @@
 import pandas as pd
+import discord
 from datetime import datetime, timedelta
 from typing import List, Union
 from dataclasses import dataclass, asdict
@@ -86,3 +87,20 @@ def summarise_counts(summary_df: pd.DataFrame) -> pd.DataFrame:
     out_df
     
     return out_df
+
+def pandas_df_to_discord_embed(df: pd.DataFrame, embed_title: str = "Table") -> discord.Embed:
+    """
+    Create a nicely formatted discord Embed object from
+    a pandas dataframe.
+
+    Args:
+        df (pd.DataFrame): Pandas DataFrame to convert into discord embed.
+        embed_title (str): The embed title.
+
+    Returns:
+        discord.Embed: A formatted discord embed with the dataframe contents.
+    """
+    embed = discord.Embed(title=embed_title)
+    for col in df.columns:
+        embed.add_field(name=col, value="\n".join(df[col].astype(str)), inline=True)
+    return embed
