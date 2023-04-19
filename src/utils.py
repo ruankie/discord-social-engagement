@@ -104,3 +104,31 @@ def pandas_df_to_discord_embed(df: pd.DataFrame, embed_title: str = "Table") -> 
     for col in df.columns:
         embed.add_field(name=col, value="\n".join(df[col].astype(str)), inline=True)
     return embed
+
+def get_hist_summary_discord_embed(since: str, freq: str, channel_names: List[str], embed_title: str) -> discord.Embed:
+    """
+    Create a nicely formatted discord Embed object for
+    a historical message count summary.
+
+    Args:
+        since (str): A string representation of a history start date.
+        freq (str): The sampling frequency.
+        channel_names (List[str]): A list of channel names tracked.
+        embed_title (str): A title for the embed.
+
+    Returns:
+        discord.Embed: A formatted discord embed.
+    """
+    embed = discord.Embed(
+        title=embed_title, 
+        color=discord.Colour.green()
+    )
+
+    message_body_lines = [
+        f"📅 Since: `{since}`",
+        f"⏰ Sample Freq: `{freq}`",
+        f"📢 Channels: {', '.join([f'`{ch.name}`' for ch in channel_names])}"
+    ]
+    embed.add_field(name="Details", value="\n".join(message_body_lines), inline=True)
+
+    return embed
