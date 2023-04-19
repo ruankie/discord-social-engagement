@@ -85,4 +85,4 @@ def summarise_counts(summary_df: pd.DataFrame) -> pd.DataFrame:
     out_df["unique_authors"] = summary_df.groupby(by="date_time", as_index=True)["author_id"].nunique()
     out_df
     
-    return summary_df
+    return out_df
