@@ -6,5 +6,3 @@ discord:
         ids:
             - 653231
             - 984651
-general:
-    resample_freq: D # results will be summarised by this time sample frequency
