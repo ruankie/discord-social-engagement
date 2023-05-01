@@ -5,6 +5,9 @@ A Discord bot that tracks social engagement on specified channels.
 
 This bot includes slash commands with annotated arguments for easy use. An extra layer of security is added so that only selected users can trigger these commands. Some server side logging is also done to monitor the triggering of commands and the health of the bot.
 
+## Demo
+![discord-engagement-bot](https://user-images.githubusercontent.com/58558211/235516052-b38c5e2e-c16d-4eb9-a508-a3b71142ab86.gif)
+
 ## Usage
 
 ### Setup
