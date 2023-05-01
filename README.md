@@ -21,7 +21,7 @@ This bot includes slash commands with annotated arguments for easy use. An extra
     - Enter your bot ID in `.env.example` and rename it to `.env`
 4. Set the tracked channels and authorised bot users in `config.yml` (you can use `config.yml.example` as a template)
 
-### Run bot
+### Run Bot
 1. Run the following command on your bot server (the bot will only respond while this is running):
 ```bash
 python src/main.py
