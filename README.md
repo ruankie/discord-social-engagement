@@ -1,9 +1,9 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/ruankie/discord-social-engagement)](https://github.com/ruankie/discord-social-engagement)
 
-# discord-social-engagement
-A Discord bot that track social engagement.
+# 🗨️ discord-social-engagement
+A Discord bot that tracks social engagement on specified channels. 
 
-| Status: 🏗️ Under construction...
+This bot includes slash commands with annotated arguments for easy use. An extra layer of security is added so that only selected users can trigger these commands. Some server side logging is also done to monitor the triggering of commands and the health of the bot.
 
 ## Usage
 
@@ -16,11 +16,15 @@ A Discord bot that track social engagement.
 2. Create a Discord bot with the correct permissions and invite it to your server (see [this page](https://discordpy.readthedocs.io/en/stable/discord.html#discord-intro) for details)
 3. Set your Discord credentials
     - Enter your bot ID in `.env.example` and rename it to `.env`
-    - Set the channels you want to monitor inside `src/bot_config.example.yml` and rename it to `src/bot_config.yml`
+4. Set the tracked channels and authorised bot users in `config.yml` (you can use `config.yml.example` as a template)
 
 ### Run bot
-1. Navigate to the `src/` directory and run the main script:
+1. Run the following command on your bot server (the bot will only respond while this is running):
 ```bash
-cd src/
-python main.py
+python src/main.py
 ```
+
+## Useful Resources
+- https://discordpy.readthedocs.io/en/stable/#
+- https://www.linkedin.com/pulse/discord-bot-part-2-slash-commands-leandro-fumio-kino
+- https://www.youtube.com/watch?v=jh1CtQW4DTo

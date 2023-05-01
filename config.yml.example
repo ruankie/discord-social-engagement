@@ -1,0 +1,8 @@
+discord:
+    authorised_users: # authorised to run bot commands
+        ids:
+            - 123354
+    channels_tracked: # channels to include for engagement tracking
+        ids:
+            - 653231
+            - 984651
