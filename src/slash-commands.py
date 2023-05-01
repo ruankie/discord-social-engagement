@@ -59,17 +59,25 @@ def main():
 
     @bot.tree.command(name="say")
     @app_commands.check(check_auth)
-    @app_commands.describe(thing_to_say="What the bot must say")
-    async def say(interaction: discord.Interaction, thing_to_say: str):
+    @app_commands.describe(thing_to_say="What the bot must say", another_thing="Another thing")
+    async def say(interaction: discord.Interaction, thing_to_say: str, another_thing: str):
         logging.info(f"Command triggered. Name:say, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
-        await interaction.response.send_message(f"{thing_to_say}")
+        await interaction.response.send_message(f"{thing_to_say}, {another_thing}")
 
-    # @bot.tree.command(name="comm")
-    # @app_commands.describe(arg1="Some arg")
-    # @app_commands.describe(arg2="Another arg")
-    # async def comm(interaction: discord.Interaction, arg1: str, arg2: str):
-    #     logging.info(f"Command triggered. Name:comm, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
-    #     await interaction.response.send_message(f"Received: Arg1: {arg1}, Arg2: {arg2}")
+    @bot.tree.command(name="sync")
+    @app_commands.check(check_auth)
+    async def sync(interaction: discord.Interaction):
+        logging.info(f"Command triggered. Name:sync, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
+        logging.info("Syncing slash commands to command tree")
+        try:
+            synced = await bot.tree.sync()
+            msg = f"Synced {len(synced)} commands"
+            logging.info(msg)
+            await interaction.response.send_message(msg)
+        except Exception as ex:
+            msg = "Could not sync commands to bot tree"
+            logging.error(msg)
+            await interaction.response.send_message(msg)
 
     @bot.event
     async def on_ready():
