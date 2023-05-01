@@ -31,3 +31,5 @@ python src/main.py
 - https://discordpy.readthedocs.io/en/stable/#
 - https://www.linkedin.com/pulse/discord-bot-part-2-slash-commands-leandro-fumio-kino
 - https://www.youtube.com/watch?v=jh1CtQW4DTo
+- https://gifcap.dev
+
