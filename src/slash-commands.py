@@ -51,11 +51,17 @@ logging.info("Setting up discord bot")
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 def main():
-    @bot.tree.command(name="test", description="Test if the bot is working")
-    @commands.check(check_auth)
+    @bot.tree.command(name="test")
+    # @commands.check(check_auth)
     async def test(interaction: discord.Interaction):
         logging.info(f"Command triggered. Name:test, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
         await interaction.response.send_message("Hello. This bot is working 👌")
+
+    @bot.tree.command(name="say")
+    @app_commands.describe(thing_to_say="What the bot must say")
+    async def say(interaction: discord.Interaction, thing_to_say: str):
+        logging.info(f"Command triggered. Name:say, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
+        await interaction.response.send_message(f"{thing_to_say}")
 
     @bot.event
     async def on_ready():
