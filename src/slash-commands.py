@@ -4,6 +4,7 @@
 import os
 import discord
 from discord.ext import commands
+from discord import app_commands
 from dotenv import load_dotenv
 import logging
 import yaml
@@ -30,11 +31,11 @@ CHANNEL_IDS = config["discord"]["channels_tracked"]["ids"]
 AUTHORISED_USER_IDS = config["discord"]["authorised_users"]["ids"]
 
 
-def check_auth(ctx):
+def check_auth(interaction: discord.Interaction) -> bool:
     """
-    Check if the command is triggered by an authorised user.
+    Check if the command was triggered by an authorised user.
     """
-    return ctx.message.author.id in AUTHORISED_USER_IDS
+    return interaction.user.id in AUTHORISED_USER_IDS
 
 # load env vars
 logging.info("Loading env vars")
@@ -47,20 +48,24 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 logging.info("Setting up discord bot")
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 def main():
-    @bot.command()
+    @bot.tree.command(name="test", description="Test if the bot is working")
     @commands.check(check_auth)
-    async def test(ctx):
-        logging.info(f"Command triggered. Name:test, Author: {ctx.author.id}, Channel: {ctx.channel.id}")
-        await ctx.send("Hello. This bot is working 👌")
+    async def test(interaction: discord.Interaction):
+        logging.info(f"Command triggered. Name:test, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
+        await interaction.response.send_message("Hello. This bot is working 👌")
 
     @bot.event
     async def on_ready():
         logging.info("Bot is ready ✅")
         logging.info("Syncing slash commands to command tree")
-        await bot.tree.sync()
+        try:
+            synced = await bot.tree.sync()
+            logging.info(f"Synced {len(synced)} commands")
+        except Exception as ex:
+            logging.error("Could not sync commands to bot tree")
 
     bot.run(BOT_TOKEN)
 
