@@ -64,10 +64,13 @@ def main():
         await interaction.response.defer()
 
         # get list of tracked channels
-        logging.info(f"Collecting tracked channels")
+        logging.info(f"Collecting tracked channels in guild")
         tracked_channels = []
+        trigger_guild_id = interaction.guild_id
         for channel_id in CHANNEL_IDS:
-            tracked_channels.append(bot.get_channel(channel_id))
+            ch = bot.get_channel(channel_id)
+            if ch.guild.id == trigger_guild_id:
+                tracked_channels.append(ch)
         logging.info(f"Found {len(tracked_channels)} channels")
 
         # get channel message history for tracked channels
