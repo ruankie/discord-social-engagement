@@ -60,6 +60,9 @@ def main():
     async def hst(interaction: discord.Interaction, after_date: str = "2022-01-01", freq: str = "D"):
         logging.info(f"Command triggered. Name:hst, Author: {interaction.user.id}, Channel: {interaction.channel.id}")
 
+        # defer response while calculating
+        await interaction.response.defer()
+
         # get list of tracked channels
         logging.info(f"Collecting tracked channels")
         tracked_channels = []
@@ -110,7 +113,7 @@ def main():
         embed.set_footer(text="Please find the summary attached.")
 
         # send interaction history
-        await interaction.response.send_message(embed=embed, file=file)
+        await interaction.followup.send(embed=embed, file=file)
 
         # remove temp file
         try:
