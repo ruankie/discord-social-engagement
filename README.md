@@ -26,6 +26,7 @@ This bot includes slash commands with annotated arguments for easy use. An extra
 ```bash
 python src/main.py
 ```
+2. Once initialised, the bot will appear online and it will respond to slash commands. Type `/` and a list of available commands will appear if you have the correct permissions on the server.
 
 ## Useful Resources
 - https://discordpy.readthedocs.io/en/stable/#
